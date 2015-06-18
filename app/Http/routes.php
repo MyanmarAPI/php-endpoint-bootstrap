@@ -14,3 +14,5 @@
 $app->get('/', function() use ($app) {
     return $app->welcome();
 });
+
+require __DIR__.'/../Api/routes.php';
