@@ -23,6 +23,9 @@ $app = new Laravel\Lumen\Application(
 
  $app->withEloquent();
 
+$app->configure('app');
+$app->configure('mongo_lite');
+
 /*
 |--------------------------------------------------------------------------
 | Register Container Bindings
@@ -63,6 +66,10 @@ $app->singleton(
 //     // 'Laravel\Lumen\Http\Middleware\VerifyCsrfToken',
 // ]);
 
+$app->routeMiddleware([
+        'auth'  => 'App\Http\Middleware\AuthMiddleware'
+    ]);
+
 // $app->routeMiddleware([
 
 // ]);
@@ -78,7 +85,11 @@ $app->singleton(
 |
 */
 
-// $app->register('App\Providers\AppServiceProvider');
+// Register mongo_lite component
+$app->register('Hexcores\MongoLite\Laravel\MongoLiteServiceProvider');
+
+// Register the main application
+$app->register('App\Providers\AppServiceProvider');
 
 /*
 |--------------------------------------------------------------------------
