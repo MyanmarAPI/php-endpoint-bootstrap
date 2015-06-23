@@ -91,6 +91,12 @@ abstract class AbstractModel
         return $this->getCollection()->first($id);
     }
 
+
+    public function count()
+    {
+        return $this->getCollection()->count();
+    }
+
     /**
      * Return mongo collection name to be connected
      *
