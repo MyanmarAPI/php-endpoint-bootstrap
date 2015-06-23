@@ -1,4 +1,4 @@
-<?php namespace App\Api\Transformers;
+<?php namespace App\Transformers;
 
 
 /**
