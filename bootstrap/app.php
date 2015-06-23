@@ -21,7 +21,7 @@ $app = new Laravel\Lumen\Application(
 
  $app->withFacades();
 
- $app->withEloquent();
+// $app->withEloquent();
 
 $app->configure('app');
 $app->configure('mongo_lite');
@@ -67,7 +67,8 @@ $app->singleton(
 // ]);
 
 $app->routeMiddleware([
-        'auth'  => 'App\Http\Middleware\AuthMiddleware'
+        'auth'  => 'App\Http\Middleware\AuthMiddleware',
+        'apiVerify'	=> 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader'
     ]);
 
 // $app->routeMiddleware([
