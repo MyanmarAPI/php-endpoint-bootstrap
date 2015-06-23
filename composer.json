@@ -8,6 +8,7 @@
         "laravel/lumen-framework": "5.1.*",
         "vlucas/phpdotenv": "~1.0",
         "hexcores/mongo-lite": "dev-master",
+        "hexcores/api-support" : "dev-master",
         "league/fractal": "0.12.0"
     },
     "require-dev": {
