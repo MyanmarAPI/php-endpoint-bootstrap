@@ -91,7 +91,10 @@ abstract class AbstractModel
         return $this->getCollection()->first($id);
     }
 
-
+    /**
+     * Get count of all documents from specific collection
+     * @return int
+     */
     public function count()
     {
         return $this->getCollection()->count();
