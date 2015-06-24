@@ -2,7 +2,6 @@
 
 use Hexcores\MongoLite\Query;
 
-use Illuminate\Pagination\Paginator;
 use Illuminate\Pagination\LengthAwarePaginator;
 
 /**
