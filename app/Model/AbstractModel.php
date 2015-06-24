@@ -2,6 +2,9 @@
 
 use Hexcores\MongoLite\Query;
 
+use Illuminate\Pagination\Paginator;
+use Illuminate\Pagination\LengthAwarePaginator;
+
 /**
  * This file is part of elecapi project
  * Abstract class for application model
@@ -98,6 +101,32 @@ abstract class AbstractModel
     public function count()
     {
         return $this->getCollection()->count();
+    }
+
+    /**
+     * Get documents with pagination
+     * @param  integer $limit    [limit of query ]
+     * @param  integer  $page     [page view]
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    public function paginate($limit = 10 , $page = 1)
+    {
+        $skip = $page != 1 ? $limit * ($page - 1 ): 0;
+
+        return $this->changePaginater($limit, $this->getMany($limit,$skip), $this->count(), $page);
+    }
+    
+    /**
+     * Change to Pagination
+     * @param  integer $limit   [limit of query]
+     * @param  mixed  $results
+     * @param  int  $total   [count of all documents]
+     * @param  int  $page    [page view]
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     */
+    protected function changePaginater($limit = 10, $results, $total, $page)
+    {
+        return new LengthAwarePaginator($results, $total, $limit, $page);
     }
 
     /**
