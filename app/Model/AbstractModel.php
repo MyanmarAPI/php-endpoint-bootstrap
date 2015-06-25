@@ -1,5 +1,7 @@
 <?php namespace App\Model;
 
+use MongoRegex;
+
 use Hexcores\MongoLite\Query;
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -100,6 +102,20 @@ abstract class AbstractModel
     public function count()
     {
         return $this->getCollection()->count();
+    }
+
+    /**
+     * Get documents by like 
+     * @param  string $key   
+     * @param  string $value 
+     * @param  string $opt   regex option
+     * @return Hexcores\MongoLite\Query
+     */
+    public function like($key, $value, $opt = 'im')
+    {
+        $value = new MongoRegex('/'.$value.'/'.$opt);
+
+        return $this->getCollection()->where($key, '=', $value)->get();
     }
 
     /**
