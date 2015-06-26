@@ -115,7 +115,7 @@ abstract class AbstractModel
     {
         $value = new MongoRegex('/'.$value.'/'.$opt);
 
-        return $this->getCollection()->where($key, '=', $value)->get();
+        return $this->getCollection()->where($key, '=', $value);
     }
 
     /**
