@@ -119,6 +119,18 @@ abstract class AbstractModel
     }
 
     /**
+     * Get documents by where
+     * @param  string $key   
+     * @param  string $operateor 
+     * @param  string $value
+     * @return Hexcores\MongoLite\Query
+     */
+    public function where($key, $operator = null, $value = null)
+    {
+        return $this->getCollection()->where($key, $operator, $value);
+    }
+
+    /**
      * Get documents with pagination
      * @param  integer $limit    [limit of query ]
      * @param  integer  $page     [page view]
