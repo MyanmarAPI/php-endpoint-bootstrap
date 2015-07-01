@@ -19,5 +19,3 @@ $app->group(['middleware' => 'auth'], function () use ($app)
 {
     // do your stuff here
 });
-
-require __DIR__.'/../Api/routes.php';
