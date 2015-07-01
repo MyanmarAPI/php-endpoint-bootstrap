@@ -6,8 +6,8 @@ This repo is intend to use as boilerplate for various endpoints developed in PHP
 
 - Clone this repo
 - Change your own remote
-- run composer install
-- place your codes
+- Run composer install
+- Place your codes
 
 ##### Applicaiont Environment
 
@@ -36,6 +36,30 @@ You shold change the value of **api_key** in it.
 ##### For Using Api Support
 [Api Support documentation](https://github.com/hexcores/api-support)
 
+##### Importing data
+
+To import data from csv to database, csv files need to be under ***storage/data*** directory. The directory should look like 
+the following.
+
+***To import data, models need to be created first.***
+
+    Root
+    |- Storage
+        |- data
+            |- 20150701
+                |- candidate
+                    |- file2.csv
+                    |- file1.csv
+                |- party
+                    |- file1.csv
+
+And run artisan command
+
+    // Usage
+    php artisan iora:import [model] <--path="path/to/dir">
+
+    // Example
+    php artisan iora:import candidate --path="20150701/candidate"
 
 
 ### Development
