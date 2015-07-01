@@ -121,7 +121,7 @@ abstract class AbstractModel
     /**
      * Get documents by where
      * @param  string $key   
-     * @param  string $operateor 
+     * @param  string $operator
      * @param  string $value
      * @return Hexcores\MongoLite\Query
      */
@@ -169,11 +169,4 @@ abstract class AbstractModel
      * @return string
      */
     abstract public function getCollectionName();
-
-    /**
-     * Insert newly data to specific mongo collection
-     * @param  array  $data
-     * @return mix
-     */
-    abstract public function create(array $data);
 }
