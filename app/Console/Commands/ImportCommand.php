@@ -38,37 +38,31 @@ class ImportCommand extends Command{
      */
     public function fire()
     {
-        $this->iterate();
+        $this->import();
     }
 
-    protected function iterate()
+    protected function import()
     {
+        $model = $this->input->getArgument('model');
+
         $path = $this->input->getOption('path');
 
-        $path = (is_null($path)) ? storage_path('data/' . $this->input->getArgument('model')) : storage_path($path);
+        $path = (is_null($path)) ? storage_path('data') : storage_path('data/' . $path);
 
-        $files = $this->filesystem->files(storage_path('data'));
+        $file = $path . '/' . $model . '.csv';
 
-        if (empty($files))
+        if (! $this->filesystem->exists($file))
         {
-            return $this->line('There is no file to import in ' . $path);
+            return $this->line('[ERROR !] File not found - ' . $file);
         }
 
-        $this->info('Importing ...');
+        $this->info('Importing data to ' . $model);
 
-        foreach ($files as $file)
-        {
-            $this->info('Reading - ' . $file);
+        $reader = new Reader($file);
 
-            $reader = new Reader($file);
-            $reader->model($this->input->getArgument('model'));
+        $reader->model($model)->import();
 
-            $reader->import();
-
-            $this->info($reader->getRows() . ' rows');
-        }
-
-        $this->info('Finished importing');
+        $this->info('[SUCCESS] Imported ' . $reader->getRows() . ' rows');
     }
 
     /**
