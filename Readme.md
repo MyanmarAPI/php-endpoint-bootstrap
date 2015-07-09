@@ -1,5 +1,6 @@
 ## PHP Endpoint Bootstrap
 ==========================
+
 This repo is intend to use as boilerplate for various endpoints developed in PHP.
 
 ### Installation
@@ -9,14 +10,13 @@ This repo is intend to use as boilerplate for various endpoints developed in PHP
 - Run composer install
 - Place your codes
 
-##### Applicaiont Environment
+##### Application Environment
 
 Create a file with name '.env' in your project root directory. And past the 
 following code in it.
 
 	APP_ENV=local
 	APP_DEBUG=true
-	APP_KEY=Your APP Key
 
 	APP_LOCALE=en
 	APP_FALLBACK_LOCALE=en
@@ -25,13 +25,18 @@ following code in it.
 	SESSION_DRIVER=memcached
 	QUEUE_DRIVER=database
 
+Running the following command will set X-API-KEY and X-API-SECRET for api request headers.
+
+    php artisan api:key
+
+***Should change value of APP_ENV to production and APP_DEBUG to false for production***
+
 The value for **APP_KEY** should have 32 words which is combined with character 
 and numeric.
 
 ##### Config
 
-You can set key value pair for your application config in config/app.php. 
-You shold change the value of **api_key** in it.
+You can set key value pair for your application config in config/app.php.
 
 ##### For Using Api Support
 [Api Support documentation](https://github.com/hexcores/api-support)
@@ -46,12 +51,9 @@ the following.
     Root
     |- Storage
         |- data
-            |- 20150701
-                |- candidate
-                    |- file2.csv
-                    |- file1.csv
-                |- party
-                    |- file1.csv
+            |- 150709   * 9 July, 2015 *
+                |- file1.csv
+                |- file2.csv
 
 And run artisan command
 
@@ -59,8 +61,10 @@ And run artisan command
     php artisan iora:import [model] <--path="path/to/dir">
 
     // Example
-    php artisan iora:import candidate --path="20150701/candidate"
+    php artisan iora:import candidate --path="20150701"
 
+csv filename needs to be the same with model name. When the above command is run, app will find modelname.csv
+in the given directory. The above command will import data to Candidate model from candidate.csv
 
 ### Development
 
@@ -122,6 +126,14 @@ All endpoints will be called from elecapi api router only. So your route should 
 
 ```
 
+## Further Documentation
+
+- [lumen](http://lumen.laravel.com/docs)
+- [mongolite](https://github.com/hexcores/mongo-lite)
+- [support](https://github.com/hexcores/api-support)
+- [fractal](http://fractal.thephpleague.com/)
+- [csv](http://csv.thephpleague.com/)
+
 ***See [lumen documenation](http://lumen.laravel.com/docs) for further more 
 documentation***
 
@@ -129,10 +141,11 @@ documentation***
 
 ##### Development
 
-You must follow [psr](http://www.php-fig.org/) standard to develop endpoints.
+Must follow [psr](http://www.php-fig.org/) standard to develop endpoints.
+Must follow lumen coding standard
 
 ### Technology
 
 - [Lumne](http://lumen.laravel.com/) <Micro Framework from Larave>
 - [Fractal](http://fractal.thephpleague.com/) <Composer package for REST API>
-- [Monog lite](https://github.com/hexcores/mongo-lite) <Composer package for mongodb>
+- [Mongo lite](https://github.com/hexcores/mongo-lite) <Composer package for mongodb>
