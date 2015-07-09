@@ -117,7 +117,7 @@ class Reader extends AbstractReader {
 
         foreach ($keys as $index => $value)
         {
-            $result[$value] = $data[$index];
+            $result[snake_case($value)] = $data[$index];
         }
 
         return $result;
