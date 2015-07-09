@@ -17,13 +17,13 @@ abstract class AbstractModel
 {
     /**
      * Mongo lite query instance
-     * @var Hexcores\MongoLite\Query
+     * @var \Hexcores\MongoLite\Query
      */
     protected $collection;
 
     /**
      * Mongodb connection
-     * @var Hexcores\MongoLite\Connection
+     * @var \Hexcores\MongoLite\Connection
      */
     protected $connection;
 
@@ -53,7 +53,7 @@ abstract class AbstractModel
 
     /**
      * Get many document form specific collection
-     * @param  integer $limit  
+     * @param  integer $limit
      * @param  integer $offset Offset or skip
      * @return array
      */
@@ -64,9 +64,9 @@ abstract class AbstractModel
 
     /**
      * Get many document with where statement
-     * @param  string $key   Document key
-     * @param  mix    $value
-     * @param  array  $field
+     * @param  string $key Document key
+     * @param  mix $value
+     * @param  array $field
      * @return array
      */
     public function getManyBy($key, $value, array $field = [])
@@ -76,9 +76,9 @@ abstract class AbstractModel
 
     /**
      * Get one document by specific key value pair
-     * @param  string $key   Mongo document key
-     * @param  mix    $value
-     * @return Hexcores\MongoLite\Document|null
+     * @param  string $key Mongo document key
+     * @param  mix $value
+     * @return \Hexcores\MongoLite\Document|null
      */
     public function getBy($key, $value)
     {
@@ -87,12 +87,20 @@ abstract class AbstractModel
 
     /**
      * Get one document by mongo id
-     * @param  string $id
-     * @return Hexcores\MongoLite\Document|null
+     * @param $id
+     * @return \Hexcores\MongoLite\Document|null
      */
-    public function get($id)
+    public function find($id)
     {
         return $this->getCollection()->first($id);
+    }
+
+    /**
+     * @return array
+     */
+    public function get()
+    {
+        return $this->getCollection()->get();
     }
 
     /**
@@ -105,55 +113,51 @@ abstract class AbstractModel
     }
 
     /**
-     * Get documents by like 
-     * @param  string $key   
-     * @param  string $value 
-     * @param  string $opt   regex option
-     * @return Hexcores\MongoLite\Query
+     * Find items with like search
+     * @param $key
+     * @param $value
+     * @param string $opt
+     * @return \App\Model\AbstractModel
      */
     public function like($key, $value, $opt = 'im')
     {
-        $value = new MongoRegex('/'.$value.'/'.$opt);
+        $value  = new MongoRegex('/' . $value . '/' . $opt);
 
-        return $this->getCollection()->where($key, '=', $value);
+        $this->collection = $this->getCollection()->where($key, '=', $value);
+
+        return $this;
     }
 
     /**
-     * Get documents by where
-     * @param  string $key   
-     * @param  string $operator
-     * @param  string $value
-     * @return Hexcores\MongoLite\Query
+     * Where keyword to find documents
+     * @param $key
+     * @param null $operator
+     * @param null $value
+     * @return \App\Model\AbstractModel
      */
     public function where($key, $operator = null, $value = null)
     {
-        return $this->getCollection()->where($key, $operator, $value);
+        $this->collection = $this->getCollection()->where($key, $operator, $value);
+
+        return $this;
     }
 
     /**
-     * Get documents with pagination
-     * @param  integer $limit    [limit of query ]
-     * @param  integer  $page     [page view]
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
+     * Get items in pagination form
+     * @return LengthAwarePaginator
      */
-    public function paginate($limit = 10 , $page = 1)
+    public function paginate()
     {
-        $skip = $page != 1 ? $limit * ($page - 1 ): 0;
+        $page = (int)app('request')->input('page', 1);
+        $perPage = (int)app('request')->input('per_page', 15);
+        $skip = $perPage * ($page - 1);
 
-        return $this->changePaginater($limit, $this->getMany($limit,$skip), $this->count(), $page);
-    }
-    
-    /**
-     * Change to Pagination
-     * @param  integer $limit   [limit of query]
-     * @param  mixed  $results
-     * @param  int  $total   [count of all documents]
-     * @param  int  $page    [page view]
-     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator
-     */
-    protected function changePaginater($limit = 10, $results, $total, $page)
-    {
-        return new LengthAwarePaginator($results, $total, $limit, $page);
+        $result = $this->getCollection()
+                        ->limit($perPage)
+                        ->skip($skip)
+                        ->get();
+
+        return new LengthAwarePaginator($result, $this->count(), $perPage, $page);
     }
 
     /**
