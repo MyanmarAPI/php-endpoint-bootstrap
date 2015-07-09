@@ -67,8 +67,7 @@ $app->singleton(
 // ]);
 
 $app->routeMiddleware([
-        'auth'  => 'App\Http\Middleware\AuthMiddleware',
-        'apiVerify'	=> 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader'
+        'auth'  => 'Hexcores\Api\Http\Middleware\VerifyApiRequestHeader',
     ]);
 
 // $app->routeMiddleware([
