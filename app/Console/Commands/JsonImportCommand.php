@@ -14,9 +14,9 @@
  */
 
 use Illuminate\Console\Command;
+use Symfony\Component\Process\Process;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputArgument;
-use Symfony\Component\Process\Process;
 
 class JsonImportCommand extends Command {
 
@@ -65,10 +65,8 @@ class JsonImportCommand extends Command {
 
 		$path = $this->input->getArgument('path');
 
-		if ( ! app('files')->exists($path))
-		{
+		if ( ! app('files')->exists($path)) {
 			throw new \InvalidArgumentException("$path is doest not exit");
-			
 		}
 
 		$host = $this->getMongoHost();
@@ -78,20 +76,18 @@ class JsonImportCommand extends Command {
 		$this->line('MongoDB Importing to ' . $db);
 
 		$command = 'mongoimport -h '.$host.' -d'.$db;
-
 		
-			$process = new Process($command . ' -c ' . $collections . ' < ' . $path);
+		$process = new Process($command . ' -c ' . $collections . ' < ' . $path);
 
-			$process->run();
+		$process->run();
 
-			if (!$process->isSuccessful()) 
-			{
-				$this->error('Error collection - ' . $collections);
+		if (!$process->isSuccessful()) {
+			$this->error('Error collection - ' . $collections);
 
-    			throw new \RuntimeException($process->getErrorOutput());
-			}
+    		throw new \RuntimeException($process->getErrorOutput());
+		}
 			
-			$this->info('Import collection - ' . $collections);
+		$this->info('Import collection - ' . $collections);
 
 		$this->info('Finish mongo import to database '. $db);
 	}
