@@ -15,6 +15,15 @@ $app->get('/', function() use ($app) {
     return $app->welcome();
 });
 
+$app->group([
+    'prefix'    => '/health-check',
+], function () use ($app)
+{
+    $app->get('/', function() {
+        return response_ok(['message' => 'Ok.']);
+    });
+});
+
 $app->group(['middleware' => 'auth'], function () use ($app)
 {
     // do your stuff here
